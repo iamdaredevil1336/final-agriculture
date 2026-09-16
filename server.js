@@ -89,7 +89,11 @@ app.use('/api', (req, res, next) => {
 });
 
 // Serve static frontend files after API middleware
+const rootPath = process.cwd();
+app.use(express.static(rootPath));
 app.use(express.static(__dirname));
+app.use('/images', express.static(path.join(rootPath, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // ── 3. Helper Functions ──────────────────────────────────────
 const ok   = (data, meta = {}) => ({ success: true,  ...meta, data });
