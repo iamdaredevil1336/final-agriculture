@@ -113,10 +113,19 @@ function filterCrops(q) {
   return r;
 }
 
-// ── 4. Standard Crop API Routes ──────────────────────────────
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+// ── 4. Frontend Page Routes ──────────────────────────────────
+const PAGES = ['index', 'crops', 'seeds', 'prices', 'seasons', 'soils', 'login'];
+PAGES.forEach(page => {
+  const filePath = path.join(__dirname, `${page}.html`);
+  app.get(`/${page}.html`, (req, res) => res.sendFile(filePath));
+  if (page === 'index') {
+    app.get('/', (req, res) => res.sendFile(filePath));
+  } else {
+    app.get(`/${page}`, (req, res) => res.sendFile(filePath));
+  }
 });
+
+// ── 5. Standard Crop API Routes ──────────────────────────────
 
 app.get('/api/crops', (req, res) => {
   const result = filterCrops(req.query);

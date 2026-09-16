@@ -6,6 +6,11 @@
       "destination": "/api/index.js?_path=$1"
     }
   ],
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "{*.html,*.css,*.js,images/**,locale/**,data/**}"
+    }
+  },
   "headers": [
     {
       "source": "/images/(.*)",
