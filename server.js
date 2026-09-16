@@ -643,8 +643,8 @@ Keep answers concise, practical, and farmer-friendly. Use simple language. For I
       }
     };
 
-    // Try supported Gemini models in sequence: gemini-1.5-flash, gemini-2.0-flash
-    const chatModels = ['gemini-1.5-flash', 'gemini-2.0-flash'];
+    // Try modern supported Gemini models in sequence
+    const chatModels = ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-flash-latest', 'gemini-3.1-flash-lite'];
     let reply = null;
     let lastChatErr = null;
 
@@ -756,8 +756,8 @@ You must respond ONLY with a raw, valid JSON object matching this structure (no 
       }
     };
 
-    // Try models in order: gemini-1.5-flash, gemini-2.0-flash
-    const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash'];
+    // Try modern supported multimodal Gemini models in sequence
+    const modelsToTry = ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-flash-latest', 'gemini-3.1-flash-lite'];
     let lastError = null;
     let diagnosisResult = null;
 
@@ -775,9 +775,17 @@ You must respond ONLY with a raw, valid JSON object matching this structure (no 
           const data = await response.json();
           const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
           if (rawText) {
-            const cleaned = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-            diagnosisResult = JSON.parse(cleaned);
-            break;
+            let cleaned = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+            try {
+              diagnosisResult = JSON.parse(cleaned);
+            } catch (pErr) {
+              const startIdx = cleaned.indexOf('{');
+              const endIdx = cleaned.lastIndexOf('}');
+              if (startIdx !== -1 && endIdx > startIdx) {
+                diagnosisResult = JSON.parse(cleaned.substring(startIdx, endIdx + 1));
+              }
+            }
+            if (diagnosisResult) break;
           }
         } else {
           const errText = await response.text();
