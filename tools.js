@@ -29,16 +29,42 @@
               <p class="doctor-sub" id="docSub">Upload or snap a photo of an infected leaf or plant to diagnose diseases and get instant organic & chemical treatments.</p>
             </div>
 
-            <div class="doctor-upload-zone" id="doctorDropZone" onclick="document.getElementById('doctorFileInput').click()">
-              <input type="file" id="doctorFileInput" accept="image/*" capture="environment" style="display:none" onchange="handleDoctorImageSelect(event)">
-              <div id="doctorUploadPrompt">
-                <span class="doctor-upload-icon">📷</span>
-                <p class="doctor-upload-text" id="docUploadText"><strong>Click to upload</strong> or capture with camera</p>
-                <span class="doctor-upload-hint" id="docUploadHint">Supports JPG, PNG, WEBP (Leaf / Stem / Fruit)</span>
+            <div class="doctor-upload-zone" id="doctorDropZone">
+              <input type="file" id="doctorFileInputCamera" accept="image/*" capture="environment" style="display:none" onchange="handleDoctorImageSelect(event)">
+              <input type="file" id="doctorFileInputGallery" accept="image/*" style="display:none" onchange="handleDoctorImageSelect(event)">
+              
+              <div id="doctorUploadPrompt" onclick="document.getElementById('doctorFileInputCamera').click()">
+                <div class="doctor-scanner-frame">
+                  <span class="scanner-corner tl"></span>
+                  <span class="scanner-corner tr"></span>
+                  <span class="scanner-corner bl"></span>
+                  <span class="scanner-corner br"></span>
+                  <span class="doctor-upload-icon">📸</span>
+                  <p class="doctor-upload-text" id="docUploadText"><strong>Snap or Upload Photo</strong></p>
+                  <span class="doctor-upload-hint" id="docUploadHint">Aim at infected leaf, stem, or fruit</span>
+                </div>
+                <div class="doctor-action-btns" onclick="event.stopPropagation()">
+                  <button type="button" class="btn-doc-mode" onclick="document.getElementById('doctorFileInputCamera').click()">
+                    📷 Camera
+                  </button>
+                  <button type="button" class="btn-doc-mode btn-doc-mode--outline" onclick="document.getElementById('doctorFileInputGallery').click()">
+                    🖼️ Gallery
+                  </button>
+                </div>
               </div>
-              <div id="doctorPreviewWrap" style="display:none">
-                <img id="doctorPreviewImg" class="doctor-preview-img" alt="Crop Leaf Preview">
-                <button type="button" class="doctor-change-btn" onclick="event.stopPropagation(); document.getElementById('doctorFileInput').click()">🔄 Change Photo</button>
+
+              <div id="doctorPreviewWrap" class="doctor-preview-wrap" style="display:none">
+                <div class="doctor-preview-container">
+                  <span class="scanner-corner tl"></span>
+                  <span class="scanner-corner tr"></span>
+                  <span class="scanner-corner bl"></span>
+                  <span class="scanner-corner br"></span>
+                  <img id="doctorPreviewImg" class="doctor-preview-img" alt="Crop Leaf Preview">
+                </div>
+                <div class="doctor-preview-actions">
+                  <button type="button" class="doctor-change-btn" onclick="document.getElementById('doctorFileInputCamera').click()">📷 Retake</button>
+                  <button type="button" class="doctor-change-btn" onclick="document.getElementById('doctorFileInputGallery').click()">🖼️ Choose Another</button>
+                </div>
               </div>
             </div>
 

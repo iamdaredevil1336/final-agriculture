@@ -3424,10 +3424,76 @@ body.content-locked {
 /* Footer */
 .agribot-footer { text-align: center; padding: 6px 12px 10px; font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; }
 
-/* Mobile */
-@media (max-width: 440px) {
-  .agribot-window { width: calc(100vw - 32px); bottom: 70px; right: -4px; }
-  #agribot-root { right: 16px; bottom: 16px; }
+/* Mobile AgriBot Aspect Ratio & Responsive Layout */
+@media (max-width: 640px) {
+  #agribot-root {
+    right: 16px !important;
+    bottom: 16px !important;
+    z-index: 9999 !important;
+  }
+  .agribot-fab {
+    width: 54px !important;
+    height: 54px !important;
+    font-size: 1.45rem !important;
+    box-shadow: 0 8px 24px rgba(22, 163, 74, 0.4) !important;
+  }
+  .agribot-window {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 86vh !important;
+    height: 86dvh !important;
+    max-height: 86dvh !important;
+    border-radius: 24px 24px 0 0 !important;
+    margin: 0 !important;
+    box-shadow: 0 -12px 48px rgba(15, 23, 42, 0.28) !important;
+    transform: translateY(100%) !important;
+    transform-origin: bottom center !important;
+  }
+  .agribot-window.open {
+    transform: translateY(0) !important;
+  }
+  .agribot-header {
+    padding: 14px 16px !important;
+    border-radius: 24px 24px 0 0 !important;
+  }
+  .agribot-title {
+    font-size: 1rem !important;
+  }
+  .agribot-subtitle {
+    font-size: 0.74rem !important;
+  }
+  .agribot-close-btn {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.95rem !important;
+  }
+  .agribot-messages {
+    padding: 14px 16px !important;
+    gap: 10px !important;
+  }
+  .agribot-bubble {
+    max-width: 88% !important;
+    font-size: 0.86rem !important;
+    line-height: 1.55 !important;
+    padding: 10px 14px !important;
+  }
+  .agribot-input-wrap {
+    padding: 10px 14px max(12px, env(safe-area-inset-bottom, 12px)) !important;
+    gap: 8px !important;
+  }
+  .agribot-input {
+    font-size: 16px !important; /* Critical: prevents iOS Safari auto-zoom */
+    padding: 10px 14px !important;
+    border-radius: 12px !important;
+  }
+  .agribot-mic, .agribot-send {
+    width: 42px !important;
+    height: 42px !important;
+  }
 }
 
 /* ============================================================
@@ -3828,48 +3894,160 @@ body.content-locked {
 .doctor-upload-zone {
   border: 2px dashed var(--border);
   background: var(--bg-alt);
-  border-radius: 16px;
-  padding: 30px 20px;
+  border-radius: 20px;
+  padding: 22px 14px;
   text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 16px;
+  transition: all 0.25s ease;
+  margin-bottom: 18px;
+  position: relative;
 }
 .doctor-upload-zone:hover {
   border-color: var(--primary);
   background: var(--soft-green);
 }
+
+.doctor-scanner-frame {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 4 / 3;
+  margin: 0 auto 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(22, 163, 74, 0.05);
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.doctor-scanner-frame:hover {
+  background: rgba(22, 163, 74, 0.1);
+  transform: scale(1.01);
+}
+
+/* Viewfinder corner brackets */
+.scanner-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--primary);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 2;
+}
+.scanner-corner.tl { top: 12px; left: 12px; border-width: 3px 0 0 3px; border-top-left-radius: 6px; }
+.scanner-corner.tr { top: 12px; right: 12px; border-width: 3px 3px 0 0; border-top-right-radius: 6px; }
+.scanner-corner.bl { bottom: 12px; left: 12px; border-width: 0 0 3px 3px; border-bottom-left-radius: 6px; }
+.scanner-corner.br { bottom: 12px; right: 12px; border-width: 0 3px 3px 0; border-bottom-right-radius: 6px; }
+
 .doctor-upload-icon {
   font-size: 2.8rem;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   display: block;
+  line-height: 1;
 }
 .doctor-upload-text {
   font-size: 0.95rem;
+  font-weight: 700;
   color: var(--dark);
   margin-bottom: 4px;
 }
 .doctor-upload-hint {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
 }
+
+.doctor-action-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.btn-doc-mode {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 50px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 3px 10px rgba(22, 163, 74, 0.25);
+  transition: transform 0.2s, background 0.2s;
+}
+.btn-doc-mode:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+.btn-doc-mode--outline {
+  background: var(--card);
+  color: var(--dark);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+.btn-doc-mode--outline:hover {
+  background: var(--bg-alt);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Image Preview with Aspect Ratio & Scanner Laser */
+.doctor-preview-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.doctor-preview-container {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 4 / 3;
+  margin: 0 auto 14px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  background: #000;
+  border: 2px solid var(--primary);
+}
 .doctor-preview-img {
-  max-height: 240px;
-  max-width: 100%;
-  border-radius: 12px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 12px;
+  display: block;
+}
+.doctor-preview-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  max-width: 360px;
 }
 .doctor-change-btn {
+  flex: 1;
   background: var(--card);
   border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.82rem;
+  padding: 8px 14px;
+  border-radius: 50px;
+  font-size: 0.84rem;
   cursor: pointer;
   font-weight: 600;
   color: var(--dark);
+  transition: all 0.2s;
+}
+.doctor-change-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--soft-green);
 }
 .doctor-notes-wrap {
   margin-bottom: 16px;
@@ -5188,4 +5366,124 @@ body.content-locked {
 [data-theme="dark"] .winner-cell {
   color: #4ADE80;
 }
+
+/* ============================================================
+   MOBILE RATIO & TOUCH OPTIMIZATIONS (Smartphones & Tablets)
+   ============================================================ */
+@media (max-width: 640px) {
+  /* Modals: bottom-sheet drawer mode for thumb-friendly mobile usage */
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+  .modal {
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 90vh !important;
+    max-height: 90dvh !important;
+    border-radius: 24px 24px 0 0 !important;
+    margin: 0 !important;
+    box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.25) !important;
+    animation: modalSlideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+  @keyframes modalSlideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-body {
+    padding: 20px 16px max(24px, env(safe-area-inset-bottom, 24px)) !important;
+  }
+  .modal-close {
+    top: 14px !important;
+    right: 14px !important;
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1.1rem !important;
+    background: var(--bg) !important;
+  }
+
+  /* Crop Doctor on Mobile */
+  .doctor-title {
+    font-size: 1.35rem !important;
+  }
+  .doctor-sub {
+    font-size: 0.82rem !important;
+  }
+  .doctor-upload-zone {
+    padding: 16px 10px !important;
+    border-radius: 16px !important;
+  }
+  .doctor-scanner-frame {
+    max-width: 280px !important;
+    aspect-ratio: 4 / 3 !important;
+    margin-bottom: 12px !important;
+  }
+  .doctor-preview-container {
+    max-width: 100% !important;
+    aspect-ratio: 4 / 3 !important;
+    border-radius: 14px !important;
+  }
+  .doctor-preview-img {
+    aspect-ratio: 4 / 3 !important;
+  }
+  .doctor-notes-input {
+    font-size: 16px !important; /* Prevents iOS Safari zoom */
+    padding: 12px !important;
+  }
+  .doctor-scan-btn {
+    padding: 14px !important;
+    font-size: 1rem !important;
+    min-height: 48px !important;
+  }
+  .doctor-res-head {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  .doctor-severity-badge {
+    align-self: flex-start !important;
+  }
+  .doctor-res-disease {
+    font-size: 1.18rem !important;
+  }
+  .doctor-res-sec {
+    padding: 10px 12px !important;
+  }
+
+  /* Quick action buttons horizontal swipe bar */
+  .smart-tools-bar {
+    display: flex !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    padding: 4px 14px 14px !important;
+    gap: 8px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  .smart-tools-bar::-webkit-scrollbar {
+    display: none !important;
+  }
+  .tool-quick-btn {
+    flex-shrink: 0 !important;
+    padding: 8px 14px !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* Crop Cards Grid */
+  .crop-grid, .grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .crop-card {
+    border-radius: 16px !important;
+  }
+
+  /* Detail modal crop image */
+  .modal-crop-img {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 200px !important;
+    object-fit: cover !important;
+  }
+}
+
 
