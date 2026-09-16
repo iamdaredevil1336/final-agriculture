@@ -1,11 +1,9 @@
 // ============================================================
-//  Vercel Serverless Function Handler
-//  Wraps and exports the Express app for Vercel Edge/Node runtime
+//  Vercel Catch-All Serverless Route for /api/*
 // ============================================================
 const app = require('../server.js');
 
 module.exports = (req, res) => {
-  // If Vercel rewrote the URL to /api/index.js, restore the original URL
   if (req.url.startsWith('/api/index.js')) {
     const originalPath = req.headers['x-matched-path'] ||
                          req.headers['x-vercel-matched-path'] ||
