@@ -24,20 +24,17 @@ const PORT = process.env.PORT || 3000;
 // Trust reverse proxy (Vercel / AWS / Nginx) for accurate client IPs and rate limiting
 app.set('trust proxy', 1);
 
-// Debug endpoint for Vercel routing
-app.all('/api/index.js', (req, res) => {
-  const original = req.headers['x-matched-path'] ||
-                   req.headers['x-vercel-matched-path'] ||
-                   req.headers['x-forwarded-uri'] ||
-                   req.headers['x-original-url'];
-  res.json({
-    message: 'Vercel Debug',
-    detectedOriginal: original,
-    url: req.url,
-    originalUrl: req.originalUrl,
-    headers: req.headers,
-    query: req.query
-  });
+// Restore real route path from Vercel serverless rewrite
+app.use((req, res, next) => {
+  if (req.query && req.query._path) {
+    const subpath = req.query._path;
+    delete req.query._path;
+    const qKeys = Object.keys(req.query);
+    const queryString = qKeys.length > 0 ? '?' + new URLSearchParams(req.query).toString() : '';
+    req.url = '/api/' + subpath + queryString;
+    req.originalUrl = req.url;
+  }
+  next();
 });
 
 // ── 1. Security & Protection Middleware ────────────────────────

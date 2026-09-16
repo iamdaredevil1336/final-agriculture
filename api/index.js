@@ -4,18 +4,4 @@
 // ============================================================
 const app = require('../server.js');
 
-module.exports = (req, res) => {
-  // If Vercel rewrote the URL to /api/index.js, restore the original URL
-  if (req.url.startsWith('/api/index.js')) {
-    const originalPath = req.headers['x-matched-path'] ||
-                         req.headers['x-vercel-matched-path'] ||
-                         req.headers['x-forwarded-uri'] ||
-                         req.headers['x-original-url'];
-    if (originalPath) {
-      const qIndex = req.url.indexOf('?');
-      const query = (qIndex !== -1 && !originalPath.includes('?')) ? req.url.substring(qIndex) : '';
-      req.url = originalPath + query;
-    }
-  }
-  return app(req, res);
-};
+module.exports = app;
