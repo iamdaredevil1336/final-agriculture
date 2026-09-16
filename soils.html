@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Match your soil type — alluvial, black, loamy, sandy loam, clay, or laterite — to the best crops for your field.">
+<title>Soil Guide — AgriSystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+<script>(function(){const s=localStorage.getItem('agri-theme')||'light';document.documentElement.setAttribute('data-theme',s);})();</script>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="bg-canvas">
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+  <div class="bg-orb bg-orb--3"></div>
+  <div class="bg-orb bg-orb--4"></div>
+  <div class="bg-orb bg-orb--5"></div>
+</div>
+<div class="bg-topo"></div>
+<div class="bg-noise"></div>
+<div class="bg-vignette"></div>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">🌾 <span>AgriSystem</span></a>
+    <div class="nav-links">
+      <a href="crops.html" data-i18n="nav.crops">Crops</a>
+      <a href="seeds.html" data-i18n="nav.seeds">Seeds</a>
+      <a href="seasons.html" data-i18n="nav.seasons">Seasons</a>
+      <a href="soils.html" class="active" data-i18n="nav.soils">Soil Guide</a>
+      <a href="prices.html" data-i18n="nav.prices">📈 Prices</a>
+      <a href="javascript:void(0)" onclick="openMyFarm()">⭐ My Farm</a>
+    </div>
+    <select id="langSelect" class="lang-select" aria-label="Select Language">
+      <option value="en">English</option>
+      <option value="hi">हिंदी</option>
+      <option value="gu">ગુજરાતી</option>
+    </select>
+    <div class="auth-nav-item" id="authNavBtn"><a href="login.html" class="auth-login-link" data-i18n="buttons.login">Sign In</a></div>
+    <button class="nav-alert-btn" onclick="openPriceAlerts()" title="Mandi Price Alerts" aria-label="Mandi Price Alerts">🔔<span class="navbar-alert-badge" id="navbarAlertBadge" style="display:none">0</span></button>
+      <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+      <div class="theme-toggle-knob"></div>
+    </div>
+    <button class="nav-menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <a href="crops.html" data-i18n="nav.crops">Crops</a>
+    <a href="seeds.html" data-i18n="nav.seeds">Seeds</a>
+    <a href="seasons.html" data-i18n="nav.seasons">Seasons</a>
+    <a href="soils.html" class="active" data-i18n="nav.soils">Soil Guide</a>
+    <a href="prices.html" data-i18n="nav.prices">📈 Prices</a>
+    <div id="authNavBtnMobile"><a href="login.html" data-i18n="buttons.login">Sign In</a></div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1 data-i18n="soils.title">🪱 Soil Type Guide</h1>
+    <p data-i18n="soils.sub">Find the best crops suited to your soil type</p>
+  </div>
+</div>
+
+<!-- SMART AGRICULTURAL TOOLS QUICK BAR -->
+<section class="smart-tools-bar-wrap" aria-label="Smart Agricultural Tools">
+  <div class="container">
+    <div class="smart-tools-bar">
+      <button class="tool-quick-btn" onclick="openCropDoctor()" title="AI Crop Doctor">
+        <span class="tool-quick-icon">🌿</span>
+        <span class="tool-quick-name">AI Crop Doctor</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openFertilizerCalculator()" title="Fertilizer Calculator">
+        <span class="tool-quick-icon">🌾</span>
+        <span class="tool-quick-name">Fertilizer Calc</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openProfitEstimator()" title="Profit Estimator">
+        <span class="tool-quick-icon">📈</span>
+        <span class="tool-quick-name">Profit Estimator</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openMyFarm()" title="My Farm">
+        <span class="tool-quick-icon">⭐</span>
+        <span class="tool-quick-name">My Farm</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openSchemesFinder()" title="Kisan Schemes">
+        <span class="tool-quick-icon">🏛️</span>
+        <span class="tool-quick-name">Kisan Schemes</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openSoilHealthAnalyzer()" title="Soil Health Analyzer">
+        <span class="tool-quick-icon">🧪</span>
+        <span class="tool-quick-name">Soil Health</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openCropComparison()" title="Crop Comparison">
+        <span class="tool-quick-icon">⚖️</span>
+        <span class="tool-quick-name">Compare</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openIrrigationPlanner()" title="Smart Irrigation Planner">
+        <span class="tool-quick-icon">💧</span>
+        <span class="tool-quick-name">Irrigation</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openMachineryHub()" title="Machinery Hub">
+        <span class="tool-quick-icon">🚜</span>
+        <span class="tool-quick-name">Machinery Hub</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="container page-body">
+  <div class="soil-grid" id="soilGrid">
+    <div class="loading-spinner">Loading soils…</div>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+
+
+<script src="hindi_crop_data.js"></script>
+<script src="gujarati_crop_data.js"></script>
+<script src="i18n.js"></script>
+<script src="api.js"></script>
+<script src="crop_images.js?v=2"></script>
+<script src="auth.js"></script>
+<script src="soils.js"></script>
+<script src="chatbot.js"></script>
+  <script src="tools.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="advanced_tools.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Explore all 12 crops with advanced filters for season, soil type, water requirement, and category. Detailed crop information at your fingertips.">
+  <title>Crops — AgriSystem</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script>(function(){const s=localStorage.getItem('agri-theme')||'light';document.documentElement.setAttribute('data-theme',s);})();</script>
+</head>
+
+<body>
+
+  <!-- ANIMATED BACKGROUND -->
+  <div class="bg-canvas">
+    <div class="bg-orb bg-orb--1"></div>
+    <div class="bg-orb bg-orb--2"></div>
+    <div class="bg-orb bg-orb--3"></div>
+    <div class="bg-orb bg-orb--4"></div>
+    <div class="bg-orb bg-orb--5"></div>
+  </div>
+  <div class="bg-topo"></div>
+  <div class="bg-noise"></div>
+  <div class="bg-vignette"></div>
+
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">🌾 <span>AgriSystem</span></a>
+      <div class="nav-links">
+        <a href="crops.html" class="active">Crops</a>
+        <a href="seeds.html">Seeds</a>
+        <a href="seasons.html">Seasons</a>
+        <a href="soils.html">Soil Guide</a>
+        <a href="prices.html">📈 Prices</a>
+      </div>
+      <select id="langSelect" onchange="changeCropLanguage(this.value)" class="lang-select">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="gu">ગુજરાતી</option>
+      </select>
+      <div class="auth-nav-item" id="authNavBtn"><a href="login.html" class="auth-login-link">Sign In</a></div>
+      <button class="nav-alert-btn" onclick="openPriceAlerts()" title="Mandi Price Alerts" aria-label="Mandi Price Alerts">🔔<span class="navbar-alert-badge" id="navbarAlertBadge" style="display:none">0</span></button>
+      <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+        <div class="theme-toggle-knob"></div>
+      </div>
+      <button class="nav-menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+    <div class="nav-mobile" id="mobileMenu">
+      <a href="crops.html" class="active">Crops</a>
+      <a href="seeds.html">Seeds</a>
+      <a href="seasons.html">Seasons</a>
+      <a href="soils.html">Soil Guide</a>
+      <a href="prices.html">📈 Prices</a>
+      <div id="authNavBtnMobile"><a href="login.html">Sign In</a></div>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1>🌾 Crop Explorer</h1>
+      <p>Filter by season, soil type, climate condition or water requirement</p>
+    </div>
+  </div>
+
+  <!-- SMART AGRICULTURAL TOOLS QUICK BAR -->
+  <section class="smart-tools-bar-wrap" aria-label="Smart Agricultural Tools">
+    <div class="container">
+      <div class="smart-tools-bar">
+        <button class="tool-quick-btn" onclick="openCropDoctor()" title="AI Crop Doctor">
+          <span class="tool-quick-icon">🌿</span>
+          <span class="tool-quick-name">AI Crop Doctor</span>
+        </button>
+        <button class="tool-quick-btn" onclick="openFertilizerCalculator()" title="Fertilizer Calculator">
+          <span class="tool-quick-icon">🌾</span>
+          <span class="tool-quick-name">Fertilizer Calc</span>
+        </button>
+        <button class="tool-quick-btn" onclick="openProfitEstimator()" title="Profit Estimator">
+          <span class="tool-quick-icon">📈</span>
+          <span class="tool-quick-name">Profit Estimator</span>
+        </button>
+        <button class="tool-quick-btn" onclick="openMyFarm()" title="My Farm">
+          <span class="tool-quick-icon">⭐</span>
+          <span class="tool-quick-name">My Farm</span>
+        </button>
+        <button class="tool-quick-btn" onclick="openSchemesFinder()" title="Kisan Schemes">
+          <span class="tool-quick-icon">🏛️</span>
+          <span class="tool-quick-name">Kisan Schemes</span>
+        </button>
+        <button class="tool-quick-btn" onclick="openSoilHealthAnalyzer()" title="Soil Health Analyzer">
+          <span class="tool-quick-icon">🧪</span>
+          <span class="tool-quick-name">Soil Health</span>
+        </button>
+        <button class="tool-quick-btn" onclick="openCropComparison()" title="Crop Comparison">
+          <span class="tool-quick-icon">⚖️</span>
+          <span class="tool-quick-name">Compare</span>
+        </button>
+        <button class="tool-quick-btn" onclick="openIrrigationPlanner()" title="Smart Irrigation Planner">
+          <span class="tool-quick-icon">💧</span>
+          <span class="tool-quick-name">Irrigation</span>
+        </button>
+        <button class="tool-quick-btn" onclick="openMachineryHub()" title="Machinery Hub">
+          <span class="tool-quick-icon">🚜</span>
+          <span class="tool-quick-name">Machinery Hub</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="container page-body">
+        <!-- SEARCH + FILTERS -->
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search crops…" oninput="applyFilters()">
+        <button class="btn-search-mic" onclick="toggleVoiceSearch('#searchInput', this)" title="Voice Search">🎙️</button>
+      </div>
+      <div class="filter-group">
+        <select id="filterSeason" onchange="applyFilters()">
+          <option value="">All Seasons</option>
+          <option value="kharif">🌧️ Kharif</option>
+          <option value="rabi">❄️ Rabi</option>
+          <option value="summer">☀️ Summer</option>
+          <option value="annual">📅 Annual</option>
+          <option value="perennial">🌳 Perennial</option>
+        </select>
+        <select id="filterSoil" onchange="applyFilters()">
+          <option value="">All Soils</option>
+          <option value="alluvial">Alluvial</option>
+          <option value="black">Black</option>
+          <option value="loamy">Loamy</option>
+          <option value="sandy-loam">Sandy Loam</option>
+          <option value="clay">Clay</option>
+          <option value="laterite">Laterite</option>
+        </select>
+        <select id="filterWater" onchange="applyFilters()">
+          <option value="">Water Req.</option>
+          <option value="low">💧 Low</option>
+          <option value="medium">💧💧 Medium</option>
+          <option value="high">💧💧💧 High</option>
+        </select>
+        <select id="filterCategory" onchange="applyFilters()">
+          <option value="">All Categories</option>
+          <option value="cereal">Cereal</option>
+          <option value="vegetable">Vegetable</option>
+          <option value="cash_crop">Cash Crop</option>
+          <option value="oilseed">Oilseed</option>
+          <option value="pulse">Pulse</option>
+          <option value="fruit">Fruit</option>
+        </select>
+        <button class="btn-clear" onclick="clearFilters()">✕ Clear</button>
+      </div>
+    </div>
+
+    <div class="results-bar">
+      <span id="resultsCount">Loading…</span>
+    </div>
+
+    <div class="crop-cards-grid" id="cropGrid">
+      <div class="loading-spinner">Loading crops…</div>
+    </div>
+  </div>
+
+  <!-- SMART AGRICULTURAL TOOLS SUITE -->
+  <section class="tools-section">
+    <div class="container">
+      <h2 class="section-title">🌾 Smart Agricultural Tools</h2>
+      <p class="tools-sub">Precision farming tools to diagnose crops, compute fertilizers, estimate ROI, and manage operations.</p>
+      <div class="feature-grid">
+        <div class="feature-card" onclick="openCropDoctor()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">🌿</div>
+          <h3>AI Crop Doctor</h3>
+          <p>Upload a photo of an infected leaf to diagnose diseases and receive instant organic & chemical remedies.</p>
+        </div>
+        <div class="feature-card" onclick="openFertilizerCalculator()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">🌾</div>
+          <h3>Fertilizer Calculator</h3>
+          <p>Compute exact seeds, Urea bags, DAP, Potash, and irrigation timelines for your farm acreage.</p>
+        </div>
+        <div class="feature-card" onclick="openProfitEstimator()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">📈</div>
+          <h3>Profit Estimator</h3>
+          <p>Estimate total crop yield, gross revenue, cultivation expenses, and net return on investment (ROI).</p>
+        </div>
+        <div class="feature-card" onclick="openMyFarm()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">⭐</div>
+          <h3>My Farm</h3>
+          <p>Manage bookmarked favorite crops, monitor live APMC price watchlists, and record field notes.</p>
+        </div>
+        <div class="feature-card" onclick="openSchemesFinder()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">🏛️</div>
+          <h3>Kisan Schemes</h3>
+          <p>Find eligible subsidies: PM-KUSUM solar pumps, crop insurance, and equipment assistance grants.</p>
+        </div>
+        <div class="feature-card" onclick="openSoilHealthAnalyzer()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">🧪</div>
+          <h3>Soil Health</h3>
+          <p>Input Soil Health Card values to assess fertility, correct pH, and save up to ₹750/acre on fertilizers.</p>
+        </div>
+        <div class="feature-card" onclick="openCropComparison()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">⚖️</div>
+          <h3>Crop Comparison</h3>
+          <p>Compare two crops side-by-side across water demand, input costs, duration, and profit margins.</p>
+        </div>
+        <div class="feature-card" onclick="openIrrigationPlanner()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">💧</div>
+          <h3>Smart Irrigation</h3>
+          <p>Calculate daily water demand, pump run times, and save 50%+ water with drip scheduling.</p>
+        </div>
+        <div class="feature-card" onclick="openMachineryHub()" style="cursor:pointer" role="button" tabindex="0">
+          <div class="feature-icon">🚜</div>
+          <h3>Machinery Hub</h3>
+          <p>Rent tractors, combine harvesters, laser levelers, and drones directly from local owners.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CROP DETAIL MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <div class="modal" id="cropModal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+    aria-label="Back to top">↑</button>
+
+
+
+  <script src="hindi_crop_data.js"></script>
+  <script src="gujarati_crop_data.js"></script>
+  <script src="i18n.js"></script>
+  <script src="api.js"></script>
+  <script src="crop_images.js?v=2"></script>
+  <script src="auth.js"></script>
+  <script src="crops.js"></script>
+  <script src="chatbot.js"></script>
+  <script src="tools.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="advanced_tools.js"></script>
+</body>
+
+</html>

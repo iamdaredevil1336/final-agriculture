@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Complete seed guide — sowing depth, seed rates, germination time, and spacing for every crop in the AgriSystem database.">
+<title>Seed Guide — AgriSystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+<script>(function(){const s=localStorage.getItem('agri-theme')||'light';document.documentElement.setAttribute('data-theme',s);})();</script>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="bg-canvas">
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+  <div class="bg-orb bg-orb--3"></div>
+  <div class="bg-orb bg-orb--4"></div>
+  <div class="bg-orb bg-orb--5"></div>
+</div>
+<div class="bg-topo"></div>
+<div class="bg-noise"></div>
+<div class="bg-vignette"></div>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">🌾 <span>AgriSystem</span></a>
+    <div class="nav-links">
+      <a href="crops.html">Crops</a>
+      <a href="seeds.html" class="active">Seeds</a>
+      <a href="seasons.html">Seasons</a>
+      <a href="soils.html">Soil Guide</a>
+      <a href="prices.html">📈 Prices</a>
+      <a href="javascript:void(0)" onclick="openMyFarm()">⭐ My Farm</a>
+    </div>
+    <select id="langSelect" onchange="changeLanguage()" class="lang-select">
+      <option value="en">English</option>
+      <option value="hi">हिंदी</option>
+      <option value="gu">ગુજરાતી</option>
+    </select>
+    <div class="auth-nav-item" id="authNavBtn"><a href="login.html" class="auth-login-link">Sign In</a></div>
+    <button class="nav-alert-btn" onclick="openPriceAlerts()" title="Mandi Price Alerts" aria-label="Mandi Price Alerts">🔔<span class="navbar-alert-badge" id="navbarAlertBadge" style="display:none">0</span></button>
+      <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+      <div class="theme-toggle-knob"></div>
+    </div>
+    <button class="nav-menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <a href="crops.html">Crops</a>
+    <a href="seeds.html" class="active">Seeds</a>
+    <a href="seasons.html">Seasons</a>
+    <a href="soils.html">Soil Guide</a>
+    <a href="prices.html">📈 Prices</a>
+    <div id="authNavBtnMobile"><a href="login.html">Sign In</a></div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1 data-i18n="seed_guide_title">🌱 Seed Guide</h1>
+    <p data-i18n="seed_guide_sub">Sowing depth, seed rates, germination time &amp; spacing for every crop</p>
+  </div>
+</div>
+
+<!-- SMART AGRICULTURAL TOOLS QUICK BAR -->
+<section class="smart-tools-bar-wrap" aria-label="Smart Agricultural Tools">
+  <div class="container">
+    <div class="smart-tools-bar">
+      <button class="tool-quick-btn" onclick="openCropDoctor()" title="AI Crop Doctor">
+        <span class="tool-quick-icon">🌿</span>
+        <span class="tool-quick-name">AI Crop Doctor</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openFertilizerCalculator()" title="Fertilizer Calculator">
+        <span class="tool-quick-icon">🌾</span>
+        <span class="tool-quick-name">Fertilizer Calc</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openProfitEstimator()" title="Profit Estimator">
+        <span class="tool-quick-icon">📈</span>
+        <span class="tool-quick-name">Profit Estimator</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openMyFarm()" title="My Farm">
+        <span class="tool-quick-icon">⭐</span>
+        <span class="tool-quick-name">My Farm</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openSchemesFinder()" title="Kisan Schemes">
+        <span class="tool-quick-icon">🏛️</span>
+        <span class="tool-quick-name">Kisan Schemes</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openSoilHealthAnalyzer()" title="Soil Health Analyzer">
+        <span class="tool-quick-icon">🧪</span>
+        <span class="tool-quick-name">Soil Health</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openCropComparison()" title="Crop Comparison">
+        <span class="tool-quick-icon">⚖️</span>
+        <span class="tool-quick-name">Compare</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openIrrigationPlanner()" title="Smart Irrigation Planner">
+        <span class="tool-quick-icon">💧</span>
+        <span class="tool-quick-name">Irrigation</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openMachineryHub()" title="Machinery Hub">
+        <span class="tool-quick-icon">🚜</span>
+        <span class="tool-quick-name">Machinery Hub</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="container page-body">
+    <div class="filter-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="seedSearch" data-i18n-placeholder="search_seeds" placeholder="Search seeds…" oninput="filterSeeds()">
+      <button class="btn-search-mic" onclick="toggleVoiceSearch('#seedSearch', this)" title="Voice Search">🎙️</button>
+    </div>
+    <div class="filter-group">
+      <select id="seedCategory" onchange="filterSeeds()">
+        <option value="">All Categories</option>
+        <option value="cereal">Cereal</option>
+        <option value="vegetable">Vegetable</option>
+        <option value="cash_crop">Cash Crop</option>
+        <option value="oilseed">Oilseed</option>
+        <option value="pulse">Pulse</option>
+        <option value="fruit">Fruit</option>
+      </select>
+      <select id="seedSeason" onchange="filterSeeds()">
+        <option value="">All Seasons</option>
+        <option value="kharif">Kharif</option>
+        <option value="rabi">Rabi</option>
+        <option value="summer">Summer</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="seed-table-wrap">
+    <table class="seed-table" id="seedTable">
+      <thead>
+        <tr>
+          <th data-i18n="th_crop">Crop</th>
+          <th data-i18n="th_type">Seed Type</th>
+          <th data-i18n="th_depth">Sowing Depth</th>
+          <th data-i18n="th_rate">Seed Rate / Acre</th>
+          <th data-i18n="th_germ">Germination</th>
+          <th data-i18n="th_space">Spacing (cm)</th>
+          <th data-i18n="th_season">Season</th>
+          <th data-i18n="th_price">Seed Price</th>
+        </tr>
+      </thead>
+      <tbody id="seedTableBody">
+        <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted)">Loading seeds…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CARE TIPS CARDS -->
+  <h2 class="section-title" style="margin-top:52px" data-i18n="care_tips_title">Crop Care Tips</h2>
+  <div class="care-grid" id="careGrid">
+    <div class="loading-spinner">Loading…</div>
+  </div>
+</div>
+
+<!-- SEED DETAIL MODAL -->
+<div class="modal-overlay" id="seedModalOverlay" onclick="closeSeedModal()">
+  <div class="modal" id="seedModal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeSeedModal()">✕</button>
+    <div class="modal-body" id="seedModalBody"></div>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+
+
+<script src="hindi_crop_data.js"></script>
+<script src="gujarati_crop_data.js"></script>
+<script src="api.js"></script>
+<script src="crop_images.js?v=2"></script>
+<script src="auth.js"></script>
+<script src="seeds.js"></script>
+<script src="chatbot.js"></script>
+  <script src="tools.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="advanced_tools.js"></script>
+</body>
+</html>

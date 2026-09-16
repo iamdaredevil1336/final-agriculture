@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Live market prices for crops and seeds — AgriSystem mandi rates updated from Agmarknet.">
+  <title>Market Prices — AgriSystem</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script>(function(){const s=localStorage.getItem('agri-theme')||'light';document.documentElement.setAttribute('data-theme',s);})();</script>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="bg-canvas">
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+  <div class="bg-orb bg-orb--3"></div>
+  <div class="bg-orb bg-orb--4"></div>
+  <div class="bg-orb bg-orb--5"></div>
+</div>
+<div class="bg-topo"></div>
+<div class="bg-noise"></div>
+<div class="bg-vignette"></div>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">🌾 <span>AgriSystem</span></a>
+    <div class="nav-links">
+      <a href="crops.html">Crops</a>
+      <a href="seeds.html">Seeds</a>
+      <a href="seasons.html">Seasons</a>
+      <a href="soils.html">Soil Guide</a>
+      <a href="prices.html" class="active">📈 Prices</a>
+      <a href="javascript:void(0)" onclick="openMyFarm()">⭐ My Farm</a>
+    </div>
+    <select id="pricesLangSelect" onchange="pricesChangeLang(this.value)" class="lang-select">
+      <option value="en">English</option>
+      <option value="hi">हिंदी</option>
+      <option value="gu">ગુજરાતી</option>
+    </select>
+    <div class="auth-nav-item" id="authNavBtn"><a href="login.html" class="auth-login-link">Sign In</a></div>
+    <button class="nav-alert-btn" onclick="openPriceAlerts()" title="Mandi Price Alerts" aria-label="Mandi Price Alerts">🔔<span class="navbar-alert-badge" id="navbarAlertBadge" style="display:none">0</span></button>
+      <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+      <div class="theme-toggle-knob"></div>
+    </div>
+    <button class="nav-menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <a href="crops.html">Crops</a>
+    <a href="seeds.html">Seeds</a>
+    <a href="seasons.html">Seasons</a>
+    <a href="soils.html">Soil Guide</a>
+    <a href="prices.html" class="active">📈 Prices</a>
+    <div id="authNavBtnMobile"><a href="login.html">Sign In</a></div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1 id="pricesPageTitle">📈 Market Prices</h1>
+    <p id="pricesPageSubtitle">Live mandi rates for crops &amp; seeds — updated from Agmarknet</p>
+  </div>
+</div>
+
+<!-- SMART AGRICULTURAL TOOLS QUICK BAR -->
+<section class="smart-tools-bar-wrap" aria-label="Smart Agricultural Tools">
+  <div class="container">
+    <div class="smart-tools-bar">
+      <button class="tool-quick-btn" onclick="openCropDoctor()" title="AI Crop Doctor">
+        <span class="tool-quick-icon">🌿</span>
+        <span class="tool-quick-name">AI Crop Doctor</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openFertilizerCalculator()" title="Fertilizer Calculator">
+        <span class="tool-quick-icon">🌾</span>
+        <span class="tool-quick-name">Fertilizer Calc</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openProfitEstimator()" title="Profit Estimator">
+        <span class="tool-quick-icon">📈</span>
+        <span class="tool-quick-name">Profit Estimator</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openMyFarm()" title="My Farm">
+        <span class="tool-quick-icon">⭐</span>
+        <span class="tool-quick-name">My Farm</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openSchemesFinder()" title="Kisan Schemes">
+        <span class="tool-quick-icon">🏛️</span>
+        <span class="tool-quick-name">Kisan Schemes</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openSoilHealthAnalyzer()" title="Soil Health Analyzer">
+        <span class="tool-quick-icon">🧪</span>
+        <span class="tool-quick-name">Soil Health</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openCropComparison()" title="Crop Comparison">
+        <span class="tool-quick-icon">⚖️</span>
+        <span class="tool-quick-name">Compare</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openIrrigationPlanner()" title="Smart Irrigation Planner">
+        <span class="tool-quick-icon">💧</span>
+        <span class="tool-quick-name">Irrigation</span>
+      </button>
+      <button class="tool-quick-btn" onclick="openMachineryHub()" title="Machinery Hub">
+        <span class="tool-quick-icon">🚜</span>
+        <span class="tool-quick-name">Machinery Hub</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="container page-body">
+
+  <!-- ANALYTICS METRICS CARDS -->
+  <div class="prices-analytics-grid" id="pricesAnalyticsGrid">
+    <div class="prices-metric-card">
+      <div class="metric-icon-wrap">🚀</div>
+      <div class="metric-content">
+        <div class="metric-label" id="lbl-highest">Highest Rate</div>
+        <div class="metric-value" id="val-highest">—</div>
+        <div class="metric-sub" id="sub-highest">—</div>
+      </div>
+    </div>
+    <div class="prices-metric-card">
+      <div class="metric-icon-wrap">💎</div>
+      <div class="metric-content">
+        <div class="metric-label" id="lbl-lowest">Lowest Rate</div>
+        <div class="metric-value" id="val-lowest">—</div>
+        <div class="metric-sub" id="sub-lowest">—</div>
+      </div>
+    </div>
+    <div class="prices-metric-card">
+      <div class="metric-icon-wrap">📊</div>
+      <div class="metric-content">
+        <div class="metric-label" id="lbl-avg">Average Price</div>
+        <div class="metric-value" id="val-avg">—</div>
+        <div class="metric-sub" id="sub-avg">Across all tracked mandis</div>
+      </div>
+    </div>
+    <div class="prices-metric-card">
+      <div class="metric-icon-wrap">🏛️</div>
+      <div class="metric-content">
+        <div class="metric-label" id="lbl-mandis">Tracked Mandis</div>
+        <div class="metric-value" id="val-mandis">—</div>
+        <div class="metric-sub" id="sub-mandis">Active reporting APMCs</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- SOURCE + LAST UPDATED BAR -->
+  <div class="prices-status-bar">
+    <div class="prices-status-left">
+      <span class="prices-source-badge" id="pricesSourceBadge">⏳ Loading…</span>
+      <span class="prices-updated" id="pricesUpdated"></span>
+    </div>
+    <div class="prices-status-right">
+      <button class="btn-whatsapp" onclick="shareAllPricesWhatsApp()" title="Share live rates on WhatsApp">📲 Share on WhatsApp</button>
+      <button class="btn-export" onclick="exportPricesCSV()" title="Export prices as CSV spreadsheet">📥 Export CSV</button>
+      <button class="btn-clear" onclick="refreshPrices()">🔄 Refresh</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY FILTER CHIPS -->
+  <div class="prices-category-tabs" id="pricesCategoryTabs">
+    <button class="price-cat-btn active" onclick="setPriceCategory('all', this)" id="cat-all">All Crops</button>
+    <button class="price-cat-btn" onclick="setPriceCategory('cereal', this)" id="cat-cereal">🌾 Cereals</button>
+    <button class="price-cat-btn" onclick="setPriceCategory('pulse', this)" id="cat-pulse">🫘 Pulses</button>
+    <button class="price-cat-btn" onclick="setPriceCategory('vegetable', this)" id="cat-veg">🥦 Vegetables</button>
+    <button class="price-cat-btn" onclick="setPriceCategory('oilseed', this)" id="cat-oil">🌻 Oilseeds</button>
+    <button class="price-cat-btn" onclick="setPriceCategory('cash_crop', this)" id="cat-cash">🎋 Cash Crops</button>
+    <button class="price-cat-btn" onclick="setPriceCategory('fruit', this)" id="cat-fruit">🍎 Fruits</button>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar" style="margin-top:12px">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="pricesSearch" placeholder="Search crop…" oninput="filterPrices()">
+      <button class="btn-search-mic" onclick="toggleVoiceSearch('#pricesSearch', this)" title="Voice Search">🎙️</button>
+    </div>
+    <div class="filter-group">
+      <select id="pricesSortBy" onchange="filterPrices()">
+        <option value="name">Sort by Name</option>
+        <option value="modal_desc">Price ↑ High-Low</option>
+        <option value="modal_asc">Price ↓ Low-High</option>
+        <option value="trend_desc">Trend ↑ Gainers First</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- RESULTS COUNT -->
+  <div class="results-bar">
+    <span id="pricesCount">Loading…</span>
+  </div>
+
+  <!-- PRICES TABLE -->
+  <div class="seed-table-wrap">
+    <table class="seed-table" id="pricesTable">
+      <thead>
+        <tr>
+          <th id="th-crop">Crop</th>
+          <th id="th-min">Min Price</th>
+          <th id="th-modal">Modal Price</th>
+          <th id="th-max">Max Price</th>
+          <th id="th-seed">Seed Price</th>
+          <th id="th-trend">Trend (24h)</th>
+          <th id="th-share">Share</th>
+        </tr>
+      </thead>
+      <tbody id="pricesTableBody">
+        <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">Loading market prices…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="prices-disclaimer">
+    <p>⚠️ <strong>Disclaimer:</strong> Prices are indicative only. Actual mandi rates may vary by region, grade, and date. Always verify with your local APMC mandi before selling.</p>
+    <p>Data source: <strong>Agmarknet / data.gov.in</strong> · Prices in ₹/quintal for crops and ₹/kg for seeds</p>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+
+
+<script src="api.js"></script>
+<script src="crop_images.js?v=2"></script>
+<script src="auth.js"></script>
+<script src="i18n.js"></script>
+<script src="chatbot.js"></script>
+  <script src="tools.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="advanced_tools.js"></script>
+<script>
+// ── Prices Page Logic ─────────────────────────────────────────
+const pricesI18n = {
+  en: {
+    page_title: '📈 Market Prices',
+    page_subtitle: 'Live mandi rates for crops & seeds — updated from Agmarknet',
+    th_crop:'Crop', th_min:'Min Price', th_modal:'Modal Price', th_max:'Max Price',
+    th_seed:'Seed Price (₹/kg)', th_trend:'Trend (24h)',
+    unit_qtl:'₹/qtl', unit_kg:'₹/kg', source_live:'🟢 Live Agmarknet Data',
+    source_sim:'🟡 Simulated Mandi Prices', loading:'Loading…',
+    count: n => `${n} crops found`,
+    highest_rate: 'Highest Rate', lowest_rate: 'Lowest Rate',
+    avg_price: 'Average Price', mandis_count: 'Tracked Mandis',
+    all_mandis_sub: 'Across all tracked mandis', active_mandis_sub: 'Active reporting APMCs',
+    cat_all: 'All Crops', cat_cereal: '🌾 Cereals', cat_pulse: '🫘 Pulses',
+    cat_veg: '🥦 Vegetables', cat_oil: '🌻 Oilseeds', cat_cash: '🎋 Cash Crops', cat_fruit: '🍎 Fruits',
+    export_btn: '📥 Export CSV', refresh_btn: '🔄 Refresh'
+  },
+  hi: {
+    page_title: '📈 मंडी भाव व कीमतें',
+    page_subtitle: 'फसलों और बीजों के लाइव मंडी भाव — Agmarknet द्वारा अपडेटेड',
+    th_crop:'फसल', th_min:'न्यूनतम मूल्य', th_modal:'बाजार भाव', th_max:'अधिकतम मूल्य',
+    th_seed:'बीज मूल्य (₹/किग्रा)', th_trend:'24 घंटे का रुझान',
+    unit_qtl:'₹/क्विंटल', unit_kg:'₹/किग्रा', source_live:'🟢 लाइव Agmarknet डेटा',
+    source_sim:'🟡 अनुमानित मंडी भाव', loading:'लोड हो रहा है…',
+    count: n => `${n} फसलें मिलीं`,
+    highest_rate: 'उच्चतम भाव', lowest_rate: 'न्यूनतम भाव',
+    avg_price: 'औसत भाव', mandis_count: 'सक्रिय मंडियां',
+    all_mandis_sub: 'सभी मंडियों का औसत', active_mandis_sub: 'सक्रिय APMC मंडियां',
+    cat_all: 'सभी फसलें', cat_cereal: '🌾 अनाज', cat_pulse: '🫘 दालें',
+    cat_veg: '🥦 सब्जियां', cat_oil: '🌻 तिलहन', cat_cash: '🎋 नकदी फसलें', cat_fruit: '🍎 फल',
+    export_btn: '📥 CSV डाउनलोड', refresh_btn: '🔄 रिफ्रेश'
+  },
+  gu: {
+    page_title: '📈 બજાર ભાવ અને કિંમતો',
+    page_subtitle: 'પાક અને બીજના લાઈવ મંડી ભાવ — Agmarknet દ્વારા અપડેટ',
+    th_crop:'પાક', th_min:'ન્યૂનતમ ભાવ', th_modal:'બજાર ભાવ', th_max:'મહત્તમ ભાવ',
+    th_seed:'બીજ ભાવ (₹/કિ.ગ્રા.)', th_trend:'૨૪ કલાકનો ટ્રેન્ડ',
+    unit_qtl:'₹/ક્વિ.', unit_kg:'₹/કિ.ગ્રા.', source_live:'🟢 લાઈવ Agmarknet ડેટા',
+    source_sim:'🟡 અંદાજિત મંડી ભાવ', loading:'લોડ થઈ રહ્યું છે…',
+    count: n => `${n} પાક મળ્યા`,
+    highest_rate: 'સૌથી વધુ ભાવ', lowest_rate: 'સૌથી ઓછો ભાવ',
+    avg_price: 'સરેરાશ ભાવ', mandis_count: 'સક્રિય મંડીઓ',
+    all_mandis_sub: 'બધી મંડીઓનો સરેરાશ', active_mandis_sub: 'સક્રિય APMC મંડીઓ',
+    cat_all: 'બધા પાક', cat_cereal: '🌾 અનાજ', cat_pulse: '🫘 કઠોળ',
+    cat_veg: '🥦 શાકભાજી', cat_oil: '🌻 તેલીબિયાં', cat_cash: '🎋 રોકડિયા પાક', cat_fruit: '🍎 ફળો',
+    export_btn: '📥 CSV ડાઉનલોડ', refresh_btn: '🔄 રિફ્રેશ'
+  }
+};
+
+let allPrices = [];
+let currentCategory = 'all';
+let currentPricesLang = localStorage.getItem('agribot_lang') || 'en';
+
+// Category mapping helper
+const cropCategories = {
+  cereal: ['wheat','rice','maize','barley','sorghum','pearl millet','oats','rye','quinoa','buckwheat'],
+  pulse: ['chickpea','arhar/tur','moong','urad','masur','moth bean','cowpea','cluster bean','horse gram','rajma','lentil'],
+  vegetable: ['tomato','potato','onion','cabbage','cauliflower','broccoli','spinach','lettuce','carrot','radish','beetroot','garlic','ginger','turmeric','capsicum','chili','brinjal','okra','pumpkin','cucumber','bitter gourd','bottle gourd','green beans','peas'],
+  oilseed: ['groundnut','sunflower','mustard','soybean','safflower','castor','linseed','sesame','rapeseed','niger'],
+  cash_crop: ['cotton','sugarcane','tea','coffee','rubber','tobacco','jute','cardamom','black pepper','clove','cinnamon','nutmeg','vanilla','saffron'],
+  fruit: ['mango','banana','orange','grape','papaya','guava','pineapple','watermelon','muskmelon','pomegranate','lemon','coconut','jackfruit']
+};
+
+function getCropCategory(name) {
+  const n = (name || '').toLowerCase().trim();
+  for (const [cat, list] of Object.entries(cropCategories)) {
+    if (list.some(item => n.includes(item) || item.includes(n))) return cat;
+  }
+  return 'cereal';
+}
+
+// Crop name translations
+const cropNameMap = {
+  hi: {
+    "Wheat":"गेहूं","Rice":"चावल","Maize":"मक्का","Cotton":"कपास","Tomato":"टमाटर",
+    "Sugarcane":"गन्ना","Potato":"आलू","Sunflower":"सूरजमुखी","Chickpea":"चना",
+    "Mango":"आम","Onion":"प्याज","Groundnut":"मूंगफली","Barley":"जौ","Sorghum":"ज्वार",
+    "Pearl Millet":"बाजरा","Mustard":"सरसों","Soybean":"सोयाबीन","Cabbage":"पत्ता गोभी",
+    "Cauliflower":"फूलगोभी","Spinach":"पालक","Carrot":"गाजर","Garlic":"लहसुन",
+    "Ginger":"अदरक","Turmeric":"हल्दी","Chili":"मिर्च","Brinjal":"बैंगन","Okra":"भिंडी",
+    "Banana":"केला","Orange":"संतरा","Watermelon":"तरबूज","Lemon":"नींबू","Coconut":"नारियल",
+    "Peas":"मटर","Tea":"चाय","Coffee":"कॉफी","Lentil":"मसूर"
+  },
+  gu: {
+    "Wheat":"ઘઉં","Rice":"ચોખા","Maize":"મકાઈ","Cotton":"કપાસ","Tomato":"ટમેટા",
+    "Sugarcane":"શેરડી","Potato":"બટાકા","Sunflower":"સૂર્યમુખી","Chickpea":"ચણા",
+    "Mango":"કેરી","Onion":"ડુંગળી","Groundnut":"મગફળી","Barley":"જવ","Sorghum":"જુવાર",
+    "Pearl Millet":"બાજરી","Mustard":"સરસવ","Soybean":"સોયાબીન","Cabbage":"કોબીજ",
+    "Cauliflower":"ફૂલકોબી","Spinach":"પાલક","Carrot":"ગાજર","Garlic":"લસણ",
+    "Ginger":"આદુ","Turmeric":"હળદર","Chili":"મરચું","Brinjal":"રીંગણ","Okra":"ભીંડા",
+    "Banana":"કેળા","Orange":"નારંગી","Watermelon":"તરબૂચ","Lemon":"લીંબુ","Coconut":"નાળિયેર",
+    "Peas":"વટાણા","Tea":"ચા","Coffee":"કૉફી","Lentil":"મસૂર"
+  }
+};
+
+function getCropName(name) {
+  if (currentPricesLang === 'en') return name;
+  return (cropNameMap[currentPricesLang] || {})[name] || name;
+}
+
+function fmt(n) { return n ? '₹' + Number(n).toLocaleString('en-IN') : '—'; }
+
+function renderTrendBadge(item) {
+  const pct = item.change_pct !== undefined ? item.change_pct : (item.modal_price % 7 - 3);
+  if (pct > 0.4) {
+    return `<span class="trend-badge trend-badge--up">▲ +${Math.abs(pct)}%</span>`;
+  } else if (pct < -0.4) {
+    return `<span class="trend-badge trend-badge--down">▼ -${Math.abs(pct)}%</span>`;
+  }
+  return `<span class="trend-badge trend-badge--flat">◆ 0.0%</span>`;
+}
+
+function updateAnalyticsMetrics() {
+  if (!allPrices.length) return;
+  const t = pricesI18n[currentPricesLang];
+
+  // Highest priced commodity
+  const sorted = [...allPrices].sort((a,b) => (b.modal_price || 0) - (a.modal_price || 0));
+  const highest = sorted[0];
+  const lowest = [...allPrices].filter(p => (p.modal_price || 0) > 0).sort((a,b) => (a.modal_price || 0) - (b.modal_price || 0))[0];
+
+  const total = allPrices.reduce((acc, c) => acc + (c.modal_price || 0), 0);
+  const avg = Math.round(total / allPrices.length);
+
+  const mandis = new Set(allPrices.map(p => p.market).filter(Boolean)).size || 42;
+
+  document.getElementById('val-highest').textContent = fmt(highest.modal_price);
+  document.getElementById('sub-highest').textContent = `${getCropName(highest.crop_name)} (${highest.market || 'Mandi'})`;
+
+  document.getElementById('val-lowest').textContent = fmt(lowest?.modal_price || 0);
+  document.getElementById('sub-lowest').textContent = `${getCropName(lowest?.crop_name || '—')} (${lowest?.market || 'Mandi'})`;
+
+  document.getElementById('val-avg').textContent = fmt(avg);
+  document.getElementById('val-mandis').textContent = mandis + '+';
+
+  // Apply localized labels
+  document.getElementById('lbl-highest').textContent = t.highest_rate;
+  document.getElementById('lbl-lowest').textContent  = t.lowest_rate;
+  document.getElementById('lbl-avg').textContent     = t.avg_price;
+  document.getElementById('lbl-mandis').textContent  = t.mandis_count;
+  document.getElementById('sub-avg').textContent     = t.all_mandis_sub;
+  document.getElementById('sub-mandis').textContent  = t.active_mandis_sub;
+  document.getElementById('pricesPageTitle').textContent = t.page_title;
+  document.getElementById('pricesPageSubtitle').textContent = t.page_subtitle;
+
+  // Category buttons
+  document.getElementById('cat-all').textContent = t.cat_all;
+  document.getElementById('cat-cereal').textContent = t.cat_cereal;
+  document.getElementById('cat-pulse').textContent = t.cat_pulse;
+  document.getElementById('cat-veg').textContent = t.cat_veg;
+  document.getElementById('cat-oil').textContent = t.cat_oil;
+  document.getElementById('cat-cash').textContent = t.cat_cash;
+  document.getElementById('cat-fruit').textContent = t.cat_fruit;
+}
+
+function setPriceCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll('.price-cat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  filterPrices();
+}
+
+function renderPricesTable(list) {
+  const t = pricesI18n[currentPricesLang];
+  const tbody = document.getElementById('pricesTableBody');
+  document.getElementById('pricesCount').textContent = t.count(list.length);
+
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">No results found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map((p, i) => `
+    <tr style="animation:fadeUp 0.3s ${Math.min(i * 0.02, 0.5)}s ease both">
+      <td>
+        <div class="seed-crop-cell">
+          ${(typeof renderCropVisual === 'function') ? renderCropVisual(p.crop_name, p.image || '🌾', 'seed-crop-thumb', 'seed-crop-emoji') : `<span class="seed-crop-emoji">${p.image || '🌾'}</span>`}
+          <div>
+            <div class="seed-crop-name">${getCropName(p.crop_name)}</div>
+            ${p.market ? `<div class="seed-type-tag">${p.market} (${p.state || 'IN'})</div>` : ''}
+          </div>
+        </div>
+      </td>
+      <td class="mono">${fmt(p.min_price)}</td>
+      <td class="mono prices-modal">${fmt(p.modal_price)}</td>
+      <td class="mono">${fmt(p.max_price)}</td>
+      <td class="mono">${p.seed_price_per_kg ? '₹' + Number(p.seed_price_per_kg).toLocaleString('en-IN') + '/kg' : '—'}</td>
+      <td>${renderTrendBadge(p)}</td>
+      <td>
+        <button class="btn btn-whatsapp-sm" style="padding:4px 8px;font-size:0.75rem;width:auto;" onclick="shareSinglePriceWhatsApp('${p.crop_name}', '${p.modal_price}', '${p.market || 'APMC Mandi'}')">
+          📲
+        </button>
+      </td>
+    </tr>`).join('');
+}
+
+function applyPricesTableHeaders() {
+  const t = pricesI18n[currentPricesLang];
+  document.getElementById('th-crop').textContent  = t.th_crop;
+  document.getElementById('th-min').textContent   = t.th_min;
+  document.getElementById('th-modal').textContent = t.th_modal;
+  document.getElementById('th-max').textContent   = t.th_max;
+  document.getElementById('th-seed').textContent  = t.th_seed;
+  document.getElementById('th-trend').textContent = t.th_trend;
+}
+
+function filterPrices() {
+  const q      = document.getElementById('pricesSearch').value.toLowerCase().trim();
+  const sort   = document.getElementById('pricesSortBy').value;
+
+  let list = allPrices.filter(p => {
+    const locName = getCropName(p.crop_name).toLowerCase();
+    const origName = (p.crop_name || '').toLowerCase();
+    const mkt = (p.market || '').toLowerCase();
+    const matchText = origName.includes(q) || locName.includes(q) || mkt.includes(q);
+
+    if (currentCategory === 'all') return matchText;
+    const cat = getCropCategory(p.crop_name);
+    return matchText && (cat === currentCategory);
+  });
+
+  if (sort === 'modal_desc') list.sort((a, b) => (b.modal_price || 0) - (a.modal_price || 0));
+  else if (sort === 'modal_asc') list.sort((a, b) => (a.modal_price || 0) - (b.modal_price || 0));
+  else if (sort === 'trend_desc') list.sort((a, b) => (b.change_pct || 0) - (a.change_pct || 0));
+  else list.sort((a, b) => (a.crop_name || '').localeCompare(b.crop_name || ''));
+
+  renderPricesTable(list);
+}
+
+function pricesChangeLang(lang) {
+  currentPricesLang = lang;
+  localStorage.setItem('agribot_lang', lang);
+  applyPricesTableHeaders();
+  updateAnalyticsMetrics();
+  filterPrices();
+}
+
+// ── Export CSV Feature ─────────────────────────────────────────
+function exportPricesCSV() {
+  if (!allPrices.length) return;
+  const headers = ['Crop Name', 'Localized Name', 'Min Price (₹/qtl)', 'Modal Price (₹/qtl)', 'Max Price (₹/qtl)', 'Seed Price (₹/kg)', 'Market', 'State', 'Trend %'];
+  const rows = allPrices.map(p => [
+    `"${p.crop_name || ''}"`,
+    `"${getCropName(p.crop_name)}"`,
+    p.min_price || 0,
+    p.modal_price || 0,
+    p.max_price || 0,
+    p.seed_price_per_kg || 0,
+    `"${p.market || ''}"`,
+    `"${p.state || ''}"`,
+    `${p.change_pct || 0}%`
+  ]);
+
+  const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', `AgriSystem_Prices_${new Date().toISOString().slice(0,10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+async function refreshPrices() {
+  document.getElementById('pricesSourceBadge').textContent = '⏳ Loading…';
+  document.getElementById('pricesTableBody').innerHTML =
+    '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">Loading market prices…</td></tr>';
+  await loadPrices();
+}
+
+async function loadPrices() {
+  try {
+    const endpoint = (typeof USE_LIVE_API !== 'undefined' && USE_LIVE_API)
+      ? (API_BASE_URL || '').replace(/\/+$/, '') + '/api/prices'
+      : '/api/prices';
+    const res  = await fetch(endpoint);
+    const json = await res.json();
+    allPrices  = json?.data || [];
+
+    const source = json?.source || (allPrices[0]?.source) || 'simulated';
+    const badge  = document.getElementById('pricesSourceBadge');
+    const t      = pricesI18n[currentPricesLang];
+    badge.textContent  = source === 'live' ? t.source_live : t.source_sim;
+    badge.className = `prices-source-badge ${source === 'live' ? 'badge-live' : 'badge-sim'}`;
+
+    document.getElementById('pricesUpdated').textContent =
+      '  Last updated: ' + new Date().toLocaleTimeString();
+
+    applyPricesTableHeaders();
+    updateAnalyticsMetrics();
+    filterPrices();
+  } catch (err) {
+    console.error('[Prices]', err);
+    document.getElementById('pricesTableBody').innerHTML =
+      '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">Failed to load prices. Is the server running?</td></tr>';
+  }
+}
+
+// Initialise
+document.getElementById('pricesLangSelect').value = currentPricesLang;
+loadPrices();
+// Auto-refresh every hour
+setInterval(refreshPrices, 60 * 60 * 1000);
+
+
+function shareSinglePriceWhatsApp(crop, price, market) {
+  const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  const msg = `🌾 *AgriSystem Live Mandi Alert (${dateStr})*\n\n📈 *${crop}* Rate: *₹${Number(price).toLocaleString('en-IN')}/Quintal*\n📍 Market: ${market}\n\n🔍 Check live farming updates, AI Crop Doctor & Calculators:\nhttps://agri-info-red.vercel.app/prices.html`;
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function shareAllPricesWhatsApp() {
+  const list = (typeof displayPrices !== 'undefined' && Array.isArray(displayPrices) && displayPrices.length) ? displayPrices.slice(0, 10) : [];
+  const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  let msg = `🌾 *AgriSystem Live Mandi Rates (${dateStr})* 📊\n\n`;
+  if (list.length) {
+    list.forEach(p => {
+      msg += `• *${p.crop_name}*: ₹${Number(p.modal_price).toLocaleString('en-IN')}/qtl (Seed: ₹${p.seed_price_per_kg}/kg)\n`;
+    });
+  } else {
+    msg += `• Wheat: ₹2,450/qtl\n• Rice: ₹3,100/qtl\n• Cotton: ₹7,200/qtl\n• Mustard: ₹5,650/qtl\n`;
+  }
+  msg += `\n🔍 Live APMC Mandis, AI Crop Doctor & Calculators:\nhttps://agri-info-red.vercel.app/prices.html`;
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+</script>
+</body>
+</html>

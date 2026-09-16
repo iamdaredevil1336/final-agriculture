@@ -1,0 +1,25 @@
+{
+  "name": "AgriSystem — Crop & Seed Management",
+  "short_name": "AgriSystem",
+  "description": "Smart Agriculture Information System — Crops, Seeds, Soil Guide, Live Mandi Prices & AI Crop Doctor",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0D1310",
+  "theme_color": "#16A34A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%2316A34A'/%3E%3Ctext x='50%25' y='60%25' font-size='105' text-anchor='middle' dominant-baseline='middle'%3E🌾%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%2316A34A'/%3E%3Ctext x='50%25' y='60%25' font-size='280' text-anchor='middle' dominant-baseline='middle'%3E🌾%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["agriculture", "education", "utilities"]
+}

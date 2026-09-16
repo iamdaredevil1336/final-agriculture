@@ -1,0 +1,65 @@
+{
+  "buttons": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "sendOtp": "Send OTP",
+    "browseCrops": "Browse Crops",
+    "seedGuide": "Seed Guide",
+    "viewAllCrops": "View All Crops →",
+    "clear": "✕ Clear"
+  },
+  "nav": {
+    "home": "Home",
+    "crops": "Crops",
+    "seeds": "Seeds",
+    "seasons": "Seasons",
+    "soils": "Soil Guide",
+    "prices": "📈 Prices"
+  },
+  "search": {
+    "placeholder": "Search crops…",
+    "searchSeeds": "Search seeds…"
+  },
+  "home": {
+    "badge": "🌱 Agriculture Information System",
+    "title1": "Grow Smarter,",
+    "title2": "Harvest Better",
+    "sub": "Discover which crops suit your land. Get precise seed details, sowing calendars, water guides & care tips — all in one place.",
+    "cropsStat": "Crops",
+    "seasonsStat": "Seasons",
+    "soilsStat": "Soil Types",
+    "catStat": "Categories",
+    "findCropsBySeason": "Find Crops by Season",
+    "whatYouCanDo": "What You Can Do",
+    "featCropTitle": "Crop Explorer",
+    "featCropDesc": "Browse crops with filters for season, soil type, climate, and water requirements.",
+    "featSeedTitle": "Seed Guide",
+    "featSeedDesc": "Get exact seed rates, sowing depth, germination time, and spacing for every crop.",
+    "featSeasonTitle": "Season Calendar",
+    "featSeasonDesc": "Understand Kharif, Rabi, Summer and perennial crop cycles with timelines.",
+    "featSoilTitle": "Soil Guide",
+    "featSoilDesc": "Match your soil type with ideal crops and nutrient recommendations.",
+    "featPricesTitle": "Live Mandi Prices",
+    "featPricesDesc": "Track live government mandi prices for all major crops and seeds across markets.",
+    "ctaTitle": "Start Optimizing Your Farm Today",
+    "ctaSub": "Explore crops, compare soils, and follow ideal sowing calendars.",
+    "footer": "🌾 AgriSystem — Modern Farming & Crop Advisory"
+  },
+  "seasons": {
+    "title": "📅 Season Calendar",
+    "sub": "Understand Indian agricultural seasons and which crops grow when"
+  },
+  "soils": {
+    "title": "🪱 Soil Type Guide",
+    "sub": "Find the best crops suited to your soil type"
+  },
+  "crops": {
+    "title": "🌾 Crop Explorer",
+    "sub": "Filter by season, soil type, climate condition or water requirement"
+  },
+  "seeds": {
+    "title": "🌱 Seed Guide",
+    "sub": "Sowing depth, seed rates, germination time & spacing for every crop"
+  }
+}
