@@ -1,24 +1,5 @@
 {
   "version": 2,
-<<<<<<< HEAD
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "server.js"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-=======
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -52,7 +33,6 @@
         { "key": "X-XSS-Protection", "value": "1; mode=block" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
->>>>>>> d215345 (chore: optimize project for vercel deployment)
     }
   ]
 }
