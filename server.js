@@ -32,9 +32,17 @@ app.use((req, res, next) => {
     const qKeys = Object.keys(req.query);
     const queryString = qKeys.length > 0 ? '?' + new URLSearchParams(req.query).toString() : '';
     req.url = '/api/' + subpath + queryString;
-    req.originalUrl = req.url;
   }
   next();
+});
+
+app.get('/api/debug-files', (req, res) => {
+  res.json({
+    cwd: process.cwd(),
+    dirname: __dirname,
+    cwdFiles: fs.existsSync(process.cwd()) ? fs.readdirSync(process.cwd()) : [],
+    dirnameFiles: fs.existsSync(__dirname) ? fs.readdirSync(__dirname) : []
+  });
 });
 
 // ── 1. Security & Protection Middleware ────────────────────────
@@ -127,6 +135,22 @@ PAGES.forEach(page => {
   } else {
     app.get(`/${page}`, (req, res) => res.sendFile(filePath));
   }
+});
+
+// Root static assets (.css, .js, .json, .ico, .svg, .png)
+app.get('/:file', (req, res, next) => {
+  const file = req.params.file;
+  if (!file || !file.includes('.') || file.startsWith('api')) return next();
+  const candidates = [
+    path.join(__dirname, file),
+    path.join(process.cwd(), file)
+  ];
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      return res.sendFile(p);
+    }
+  }
+  next();
 });
 
 // ── 5. Standard Crop API Routes ──────────────────────────────
